@@ -9,11 +9,6 @@ from math_eval.operators import Operator
 reference_functions = copy.deepcopy(operators._operators)
 
 
-@pytest.fixture
-def renew_operators():
-    operators._operators = copy.deepcopy(reference_functions)
-
-
 def test_init():
     token = '%'
     priority = 3
@@ -25,6 +20,55 @@ def test_init():
     assert operator.priority == priority
     assert operator.associativity == associativity
     assert operator.function == operation
+
+
+@pytest.fixture
+def operators_for_comparison() -> tuple:
+    def create_empty_operator(priority):
+        return Operator('', priority, Associativity.LEFT, lambda a, b: 0)
+
+    return create_empty_operator(1), create_empty_operator(1), create_empty_operator(2)
+
+
+def test_lt(operators_for_comparison):
+    assert (operators_for_comparison[0] < operators_for_comparison[1]) is False
+    assert operators_for_comparison[1] < operators_for_comparison[2]
+    assert (operators_for_comparison[2] < operators_for_comparison[0]) is False
+
+
+def test_le(operators_for_comparison):
+    assert operators_for_comparison[0] <= operators_for_comparison[1]
+    assert operators_for_comparison[1] <= operators_for_comparison[2]
+    assert (operators_for_comparison[2] <= operators_for_comparison[0]) is False
+
+
+def test_eq(operators_for_comparison):
+    assert operators_for_comparison[0] == operators_for_comparison[1]
+    assert (operators_for_comparison[1] == operators_for_comparison[2]) is False
+    assert (operators_for_comparison[2] == operators_for_comparison[0]) is False
+
+
+def test_ne(operators_for_comparison):
+    assert (operators_for_comparison[0] != operators_for_comparison[1]) is False
+    assert operators_for_comparison[1] != operators_for_comparison[2]
+    assert operators_for_comparison[2] != operators_for_comparison[0]
+
+
+def test_gt(operators_for_comparison):
+    assert (operators_for_comparison[0] > operators_for_comparison[1]) is False
+    assert (operators_for_comparison[1] > operators_for_comparison[2]) is False
+    assert operators_for_comparison[2] > operators_for_comparison[0]
+
+
+def test_ge(operators_for_comparison):
+    assert operators_for_comparison[0] >= operators_for_comparison[1]
+    assert (operators_for_comparison[1] >= operators_for_comparison[2]) is False
+    assert operators_for_comparison[2] >= operators_for_comparison[0]
+
+
+@pytest.fixture
+def renew_operators():
+    operators._operators = copy.deepcopy(reference_functions)
 
 
 def test_add_operator(renew_operators):
