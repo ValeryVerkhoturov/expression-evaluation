@@ -2,7 +2,7 @@ import math
 import numbers
 import typing
 
-from math_eval.associativity import Associativity
+from .associativity import Associativity
 
 
 class Operator:
@@ -52,22 +52,32 @@ class Operator:
         raise TypeError("Wrong comparison.")
 
 
-_operators = [Operator('+', 2, Associativity.LEFT, lambda a, b: a + b),
-              Operator('-', 2, Associativity.LEFT, lambda a, b: a - b),
-              Operator('*', 3, Associativity.LEFT, lambda a, b: a * b),
-              Operator('/', 3, Associativity.LEFT, lambda a, b: a / b),
-              Operator('^', 4, Associativity.LEFT, lambda a, b: math.pow(a, b))]
+class OperatorList:
 
+    @staticmethod
+    def new_operator_list_with_default_operations():
+        default_operations = [Operator('+', 2, Associativity.LEFT, lambda a, b: a + b),
+                              Operator('-', 2, Associativity.LEFT, lambda a, b: a - b),
+                              Operator('*', 3, Associativity.LEFT, lambda a, b: a * b),
+                              Operator('/', 3, Associativity.LEFT, lambda a, b: a / b),
+                              Operator('^', 4, Associativity.LEFT, lambda a, b: math.pow(a, b))]
 
-def add_operator(operator: Operator) -> None:
-    if all(map(lambda op: operator.token != op.token, _operators)):
-        _operators.append(operator)
-    else:
-        raise Exception("Operations with token {} already exists.".format(operator.token))
+        return OperatorList(default_operations)
 
+    def __init__(self, operators):
+        self.operators: typing.Final[list[Operator]] = operators
 
-def get_operator(token: str) -> typing.Optional[Operator]:
-    try:
-        return next(filter(lambda op: op.token == token, _operators))
-    except StopIteration:
-        return None
+    def add_operator(self, operator: Operator) -> None:
+        if all(map(lambda op: operator.token != op.token, self.operators)):
+            self.operators.append(operator)
+        else:
+            raise Exception("Operations with token {} already exists.".format(operator.token))
+
+    def get_operator(self, token: str) -> typing.Optional[Operator]:
+        try:
+            return next(filter(lambda op: op.token == token, self.operators))
+        except StopIteration:
+            return None
+
+    def has_operator(self, token: str) -> bool:
+        return bool(len(tuple(filter(lambda op: op.token == token, self.operators))) != 0)
