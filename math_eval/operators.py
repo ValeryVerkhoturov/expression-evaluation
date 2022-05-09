@@ -64,3 +64,10 @@ def add_operator(operator: Operator) -> None:
         _operators.append(operator)
     else:
         raise Exception("Operations with token {} already exists.".format(operator.token))
+
+
+def get_operator(token: str) -> typing.Optional[Operator]:
+    try:
+        return next(filter(lambda op: op.token == token, _operators))
+    except StopIteration:
+        return None

@@ -84,3 +84,13 @@ def test_add_function_exception(renew_operators):
 
     with pytest.raises(Exception):
         operators.add_operator(operator)
+
+
+def test_get_function_by_token(renew_operators):
+    requested_token = '+'
+    assert operators.get_operator(requested_token).token == requested_token
+
+
+def test_get_function_by_non_existent_token(renew_operators):
+    requested_token = 'non-existent token'
+    assert operators.get_operator(requested_token) is None
