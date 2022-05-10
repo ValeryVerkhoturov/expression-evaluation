@@ -12,4 +12,4 @@ jobs:
     - name: GitHub Action for pytest
       uses: cclauss/GitHub-Action-for-pytest@master
       with:
-        args: pytest .math_eval/tests
+        args: pytest ./math_eval/tests
