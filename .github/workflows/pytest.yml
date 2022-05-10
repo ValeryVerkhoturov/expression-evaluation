@@ -1,0 +1,18 @@
+on: push
+name: on push
+jobs:
+   pytest:
+      runs-on: ubuntu-latest
+      name: Pytest passing tests
+      steps:
+        - uses: actions/setup-python@v2
+          with:
+            python-version: '3.9'
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Pytest Action Step
+          id: pytest
+          uses: paolorechia/fast-pytest-github-action@develop
+          with:
+            pytest_args: 'math_eval/tests'
+            requirements_file: 'requirements.txt'
