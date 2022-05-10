@@ -86,12 +86,9 @@ class ShuntingYardAlgorithm:
         stack = []
 
         for token in rpn:
-            if self.operator_list.has_operator(token):
+            if self.operator_list.has_operator(token) or self.function_list.has_function(token):
                 op = self.operator_list.get_operator(token) or self.function_list.get_function(token)
                 stack.append(op.function(*reversed([stack.pop() for i in range(op.param_num)])))
-            elif self.function_list.has_function(token):
-                op = self.function_list.get_function(token)
-                stack.append()
             else:
                 stack.append(float(token))
         return stack[0]
