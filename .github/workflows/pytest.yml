@@ -1,4 +1,7 @@
-sample_job:
+on: push
+name: on push
+jobs:
+   pytest:
       runs-on: ubuntu-latest
       name: Pytest passing tests
       steps:
