@@ -55,12 +55,12 @@ class Operator:
 class OperatorList:
 
     @staticmethod
-    def new_operator_list_with_default_operations():
+    def new_with_default_operations():
         default_operations = [Operator('+', 2, Associativity.LEFT, lambda a, b: a + b),
                               Operator('-', 2, Associativity.LEFT, lambda a, b: a - b),
                               Operator('*', 3, Associativity.LEFT, lambda a, b: a * b),
                               Operator('/', 3, Associativity.LEFT, lambda a, b: a / b),
-                              Operator('^', 4, Associativity.LEFT, lambda a, b: math.pow(a, b))]
+                              Operator('^', 4, Associativity.RIGHT, lambda a, b: math.pow(a, b))]
 
         return OperatorList(default_operations)
 

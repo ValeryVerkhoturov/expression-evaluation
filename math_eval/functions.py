@@ -14,7 +14,7 @@ class Function:
 class FunctionList:
 
     @staticmethod
-    def new_function_list_with_default_operations():
+    def new_with_default_operations():
         default_operations = [Function("log", 2, lambda a, b: math.log(a, b)),
                               Function("sqrt", 1, lambda a: math.sqrt(a))]
 

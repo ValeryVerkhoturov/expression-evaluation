@@ -19,7 +19,7 @@ def operator():
 
 @pytest.fixture
 def operator_list():
-    return OperatorList.new_operator_list_with_default_operations()
+    return OperatorList.new_with_default_operations()
 
 
 @pytest.fixture

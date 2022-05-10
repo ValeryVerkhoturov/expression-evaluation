@@ -19,7 +19,7 @@ def function():
 
 @pytest.fixture
 def function_list():
-    return FunctionList.new_function_list_with_default_operations()
+    return FunctionList.new_with_default_operations()
 
 
 # Tests
@@ -30,7 +30,7 @@ def test_init(function):
 
 
 def test_new_function_list_with_default_operations():
-    assert len(FunctionList.new_function_list_with_default_operations().functions) != 0
+    assert len(FunctionList.new_with_default_operations().functions) != 0
 
 
 def test_function_list_init(function_list):
