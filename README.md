@@ -25,3 +25,12 @@ It does not need any parentheses as long as each operator has a fixed number of 
 5. After reading the expression, pop the operators off the stack and add them to the output.
 6. In this case there is only one, "+".
 7. Output: 3 4 +
+
+### Example
+
+```python
+from math_eval.shunting_yard_algorithm import ShuntingYardAlgorithm
+
+sya = ShuntingYardAlgorithm.new_with_default_operations()
+print(sya.eval_rpn(sya.parse("100+1/2"))) # Output: 100.5
+```
