@@ -1,4 +1,5 @@
 import typing
+import re
 
 from math_eval.functions import FunctionList
 from math_eval.operators import OperatorList
@@ -16,6 +17,10 @@ class ShuntingYardAlgorithm:
     def __init__(self, operator_list: OperatorList, function_list: FunctionList):
         self.operator_list = operator_list
         self.function_list = function_list
+
+    # def tokenize(self, infix_expression: str) -> [str]:
+    #     return re.findall(r"(\b\w*[\.]?\w+\b|[\(\){}])"
+    #                       .format(''.join(map(lambda op: "\\" + op.token, self.operator_list.operators))), infix_expression)
 
     # Parse infix math expression to reverse polish notation with operator_list, function_list
     def parse(self, infix_expression: str):
@@ -38,20 +43,20 @@ class ShuntingYardAlgorithm:
                 stack.append(token)
             elif token == CLOSING_BRACKET:
                 operator = None
-                while stack:
+                while len(stack) > 0:
                     operator = stack.pop()
                     if operator != OPEN_BRACKET and not self.function_list.has_function(operator):
                         output_rpn.append(operator)
-                if operator is None:
-                    return None  # redundant closing brackets
+                # if operator is None:
+                #     return None  # redundant closing brackets
             elif self.operator_list.has_operator(token):
                 if prev_token is None or prev_token == OPEN_BRACKET:
                     sign = token
                     continue
-                while len(stack) > 0:
+                while len(stack):
                     # pop collected stack
                     current_operator = self.operator_list.get_operator(token)
-                    operator = self.operator_list.get_operator(stack[len(stack) - 1])
+                    operator = self.operator_list.get_operator(stack[-1])
                     if operator is None or current_operator is None:
                         break
                     if current_operator.associativity == Associativity.LEFT and \
@@ -77,7 +82,22 @@ class ShuntingYardAlgorithm:
 
         return output_rpn
 
+    def eval_rpn(self, rpn) -> float:
+        stack = []
+
+        for token in rpn:
+            if self.operator_list.has_operator(token):
+                op = self.operator_list.get_operator(token) or self.function_list.get_function(token)
+                stack.append(op.function(*reversed([stack.pop() for i in range(op.param_num)])))
+            elif self.function_list.has_function(token):
+                op = self.function_list.get_function(token)
+                stack.append()
+            else:
+                stack.append(float(token))
+        return stack[0]
+
 
 if __name__ == "__main__":
     sya = ShuntingYardAlgorithm.new_with_default_operations()
-    print(sya.parse(input()))
+    print(sya.eval_rpn(sya.parse(input())))
+

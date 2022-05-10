@@ -10,6 +10,21 @@ from math_eval.shunting_yard_algorithm import ShuntingYardAlgorithm
 OPERATOR_LIST = OperatorList.new_with_default_operations()
 FUNCTION_LIST = FunctionList.new_with_default_operations()
 
+EXPRESSION1 = "1/2+1+3/4"
+EXPRESSION1_RPN = ['1', '2', '/', '1', '+', '3', '4', '/', '+']
+EXPRESSION1_RESULT = float(1/2+1+3/4)
+
+EXPRESSION2 = "1.1 + 2.2 / 3"
+EXPRESSION2_RPN = ['1.1', '2.2', '3', '/', '+']
+EXPRESSION2_RESULT = float(1.1 + 2.2 / 3)
+
+EXPRESSION3 = "1/2"
+EXPRESSION3_RPN = ['1', '2', '/']
+EXPRESSION3_RESULT = float(1/2)
+EXPRESSION4 = "2/1"
+EXPRESSION4_RPN = ['2', '1', '/']
+EXPRESSION4_RESULT = float(2/1)
+
 
 # Fixtures
 @pytest.fixture
@@ -25,15 +40,18 @@ def test_shunting_yard_algorithm_init():
     assert instance.function_list == FUNCTION_LIST
 
 
-def test_shunting_yard_algorithm_evaluate(shunting_yard_algorithm: ShuntingYardAlgorithm):
-    assert shunting_yard_algorithm.parse("10+2") == ['10', '2', '+']
-    assert shunting_yard_algorithm.parse("10 * 2") == ['10', '2', '*']
-    assert shunting_yard_algorithm.parse("10.1+2.1") == ['10.1', '2.1', '+']
-    assert shunting_yard_algorithm.parse("+10") == ['+10']
-    assert shunting_yard_algorithm.parse("-10") == ['-10']
-    assert shunting_yard_algorithm.parse("-10*2") == ['-10', '2', '*']
-    assert shunting_yard_algorithm.parse("1+2+3") == ['1', '2', '+', '3', '+']
-    assert shunting_yard_algorithm.parse("1^2^3") == ['1', '2', '3', '^', '^']
+def test_shunting_yard_algorithm_parse(shunting_yard_algorithm: ShuntingYardAlgorithm):
+    assert shunting_yard_algorithm.parse(EXPRESSION1) == EXPRESSION1_RPN
+    assert shunting_yard_algorithm.parse(EXPRESSION2) == EXPRESSION2_RPN
+    assert shunting_yard_algorithm.parse(EXPRESSION3) == EXPRESSION3_RPN
+    assert shunting_yard_algorithm.parse(EXPRESSION4) == EXPRESSION4_RPN
+
+
+def test_shunting_yard_algorithm_eval_rpn(shunting_yard_algorithm: ShuntingYardAlgorithm):
+    assert shunting_yard_algorithm.eval_rpn(EXPRESSION1_RPN) == EXPRESSION1_RESULT
+    assert shunting_yard_algorithm.eval_rpn(EXPRESSION2_RPN) == EXPRESSION2_RESULT
+    assert shunting_yard_algorithm.eval_rpn(EXPRESSION3_RPN) == EXPRESSION3_RESULT
+    assert shunting_yard_algorithm.eval_rpn(EXPRESSION4_RPN) == EXPRESSION4_RESULT
 
 
 

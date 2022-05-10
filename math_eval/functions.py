@@ -29,5 +29,11 @@ class FunctionList:
         else:
             raise Exception("Function with name {} already exists.".format(function.name))
 
+    def get_function(self, name: str) -> typing.Optional[Function]:
+        try:
+            return next(filter(lambda func: func.name == name, self.functions))
+        except StopIteration:
+            return None
+
     def has_function(self, func_name: str) -> bool:
         return bool(len(tuple(filter(lambda func: func.name == func_name, self.functions))) != 0)

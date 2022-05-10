@@ -52,6 +52,15 @@ def test_function_list_add_function_exception(function: Function, function_list:
         function_list.add_function(function)
 
 
+def test_function_list_get_function(function: Function, function_list: FunctionList):
+    function_list.add_function(function)
+    assert function_list.get_function(function.name) == function
+
+
+def test_operator_list_get_non_existent_operator(function: Function, function_list: FunctionList):
+    assert function_list.get_function(function.name) is None
+
+
 def test_function_list_has_function(function: Function, function_list: FunctionList):
     function_list.add_function(function)
 
@@ -59,5 +68,5 @@ def test_function_list_has_function(function: Function, function_list: FunctionL
 
 
 def test_function_list_has_not_function(function: Function, function_list: FunctionList):
-    assert not function_list.has_function(function)
+    assert not function_list.has_function(function.name)
 

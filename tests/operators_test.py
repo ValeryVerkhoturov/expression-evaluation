@@ -6,7 +6,7 @@ from math_eval.operators import Operator, OperatorList
 
 # Constants
 OPERATOR_TOKEN = '%'
-OPERATOR_PRIORITY = 3
+OPERATOR_PRECEDENCE = 3
 OPERATOR_ASSOCIATIVITY = Associativity.LEFT
 OPERATOR_OPERATION = (lambda a, b: a % b)
 
@@ -14,7 +14,7 @@ OPERATOR_OPERATION = (lambda a, b: a % b)
 # Fixures
 @pytest.fixture
 def operator():
-    return Operator(OPERATOR_TOKEN, OPERATOR_PRIORITY, OPERATOR_ASSOCIATIVITY, OPERATOR_OPERATION)
+    return Operator(OPERATOR_TOKEN, OPERATOR_PRECEDENCE, OPERATOR_ASSOCIATIVITY, OPERATOR_OPERATION)
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def operators_for_comparison() -> tuple:
 # Tests
 def test_operator_init(operator):
     assert operator.token == OPERATOR_TOKEN
-    assert operator.priority == OPERATOR_PRIORITY
+    assert operator.precedence == OPERATOR_PRECEDENCE
     assert operator.associativity == OPERATOR_ASSOCIATIVITY
     assert operator.function == OPERATOR_OPERATION
 
