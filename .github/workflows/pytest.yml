@@ -1,15 +1,14 @@
-on: push
-name: on push
-jobs:
-  gitHubActionForPytest:
-    name: GitHub Action for pytest
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./tests
-    steps:
-    - uses: actions/checkout@master
-    - name: GitHub Action for pytest
-      uses: cclauss/GitHub-Action-for-pytest@master
-      with:
-        args: pytest ./math_eval/tests
+sample_job:
+      runs-on: ubuntu-latest
+      name: Pytest passing tests
+      steps:
+        - uses: actions/setup-python@v2
+          with:
+            python-version: '3.9'
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Pytest Action Step
+          id: pytest
+          uses: paolorechia/fast-pytest-github-action@develop
+          with:
+            pytest_args: 'math_eval/tests'
